@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, regain_token } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -27,12 +27,21 @@ const mutations = {
   }
 }
 
+function RegainTokenContr() {
+  setInterval(function() {
+    regain_token().then(response => {
+      setToken(response.data)
+    })
+  }, token_exp * 1000)
+}
+
+let token_exp = 0
 const actions = {
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ account: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
@@ -48,9 +57,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-
+        const timestamp = Date.parse(new Date()) / 1000
+        token_exp = parseInt((data.token_exp - timestamp) * 0.95)
+        RegainTokenContr()
         if (!data) {
-          reject('Verification failed, please Login again.')
+          reject('无法从服务器获取到个人信息，请重新登录.')
         }
 
         const { name, avatar } = data
@@ -80,6 +91,7 @@ const actions = {
 
   // remove token
   resetToken({ commit }) {
+    console.log('resetToken')
     return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
