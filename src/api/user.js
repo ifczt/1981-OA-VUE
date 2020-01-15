@@ -28,3 +28,18 @@ export function regain_token() {
     method: 'get'
   })
 }
+
+export function get_auth_list() {
+  return request({
+    url: 'user/auth_list',
+    method: 'get'
+  })
+}
+
+export function creat_user(data) {
+  return request({
+    url: 'user',
+    method: 'post',
+    data
+  })
+}

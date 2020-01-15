@@ -26,3 +26,13 @@ export function validUsername(str) {
 export function isString(str) {
   return typeof str === 'string' || str instanceof String
 }
+/**
+ * @param {Array} arg
+ * @returns {Boolean}
+ */
+export function isArray(arg) {
+  if (typeof Array.isArray === 'undefined') {
+    return Object.prototype.toString.call(arg) === '[object Array]'
+  }
+  return Array.isArray(arg)
+}

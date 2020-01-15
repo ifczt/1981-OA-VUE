@@ -27,8 +27,8 @@
       width="500px"
     >
       <el-form ref="add_account_form" :model="add_account_form" :rules="rules" label-width="100px">
-        <el-form-item label="用户名" prop="name">
-          <el-input v-model="add_account_form.name" placeholder="请输入用户名" />
+        <el-form-item label="用户名" prop="account">
+          <el-input v-model="add_account_form.account" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="add_account_form.password" placeholder="请输入密码" show-password />
@@ -36,13 +36,20 @@
         <el-form-item label="确认密码" prop="password">
           <el-input v-model="add_account_form.password_ver" placeholder="请再次输入密码" show-password />
         </el-form-item>
-        <el-form-item label="用户类别" prop="author">
-          <el-select v-model="add_account_form.author" placeholder="请选择用户类别"></el-select>
+        <el-form-item label="用户类别" prop="auth">
+          <el-select v-model="add_account_form.auth" placeholder="请选择用户类别">
+            <el-option
+              v-for="item in author_list"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="add_account_visible = false">取 消</el-button>
-        <el-button type="primary" @click="add_account_visible = false">确 定</el-button>
+        <el-button type="primary" @click="submit_create_account('add_account_form')">确 定</el-button>
       </span>
     </el-dialog>
   </div>
