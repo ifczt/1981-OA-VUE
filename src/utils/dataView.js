@@ -1,10 +1,10 @@
-import { isArray, isString } from '@/utils/validate'
+import {isArray, isString} from '@/utils/validate'
 
 export const rules = {
-  account: [{ required: true, message: '请输入账号' }],
-  password: [{ required: true, message: '请输入密码' }],
-  password_ver: [{ required: true, message: '请重新输入密码' }],
-  auth: [{ required: true, message: '请选择用户类别' }]
+  account: [{ required: true, message: '请输入账号', trigger: 'change' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'change' }],
+  password_ver: [{ required: true, message: '请重新输入密码', trigger: 'change' }],
+  auth: [{ required: true, message: '请选择用户类别', trigger: 'change' }]
 }
 
 /**
@@ -27,14 +27,14 @@ function addHtmlSpan(str) {
   return '<span style="line-height: 20px">' + str + '</span>'
 }
 
-const auth_dict = { 'SUPER_ADMIN': '超级管理员', 'ADMIN': '管理员', 'USER': '用户' }
+const auth_dict = {'SUPER_ADMIN': '超级管理员', 'ADMIN': '管理员', 'OPERATOR': '操作员', 'USER': '用户'}
 
 export function serverData_in(data) {
   if (isArray(data)) {
-    if (data.includes('ADMIN')) {
+    if (data.includes('USER')) {
       const auth_data = []
       for (const item of data) {
-        auth_data.push({ value: auth_dict[item], key: item })
+        auth_data.push({value: auth_dict[item] || item, key: item})
       }
       return auth_data
     }

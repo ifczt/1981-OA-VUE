@@ -4,22 +4,64 @@
       <card-panel
         class="cardPanelColor"
         btn-text="内部账号管理"
-        :btn-marker="is_indoor_btn_choice"
+        :btn-marker="u_type"
         btn-icon="user_card"
-        @click.native="is_indoor_btn_choice=true"
+        @click.native="u_type=true"
       />
       <card-panel
         class="cardPanelColor_company"
         btn-text="企业账号管理"
-        :btn-marker="!is_indoor_btn_choice"
+        :btn-marker="!u_type"
         btn-icon="company"
-        @click.native="is_indoor_btn_choice=false"
+        @click.native="u_type=false"
       />
       <el-button type="primary" icon="el-icon-circle-plus" style="margin-left: 15px;width: 300px" @click="add_account_visible=true">{{ btn_label }}</el-button>
     </div>
-    <div style="'display:inline-block;float:left;padding-top: 15px;" class="autoWidth_">
-      <el-table :height="tableHeight" />
-    </div>
+    <el-card shadow="hover" class="autoWidth_">
+      <el-table
+        :height="tableHeight"
+        :data="user_list"
+        fit
+        stripe
+        highlight-current-row
+        style="width: calc(100% - 30px);margin: 15px"
+      >
+        <el-table-column align="center" label="ID">
+          <template slot-scope="scope">
+            <span>{{ scope.row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="用户名" width="80">
+          <template slot-scope="scope">
+            <span>{{ scope.row.account }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="状态" width="80">
+          <template slot-scope="scope">
+            <span>
+              <el-tag :type="scope.row.state===1?'success':'danger'">
+                {{ scope.row.state===1?'已启用':'已禁用' }}
+              </el-tag>
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" width="180px">
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" icon="el-icon-edit" />
+            <el-button type="warning" size="mini" icon="el-icon-error" />
+            <el-button type="danger" size="mini" icon="el-icon-delete" />
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination
+        v-show="user_list_total>0"
+        :total="user_list_total"
+        :page.sync="listQuery.page"
+        :limit.sync="listQuery.limit"
+        style="padding: 0 15px 0 15px"
+        @pagination="get_user_list_view()"
+      />
+    </el-card>
     <!--  添加账号-dialog  -->
     <el-dialog
       :title="btn_label"
@@ -29,8 +71,10 @@
       <el-form ref="add_account_form" :model="add_account_form" :rules="rules" label-width="100px">
         <el-form-item label="用户名" prop="account">
           <el-input v-model="add_account_form.account" placeholder="请输入用户名" />
+          <el-input style="position: fixed;bottom: -9999px" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
+          <el-input style="position: fixed;bottom: -9999px" show-password />
           <el-input v-model="add_account_form.password" placeholder="请输入密码" show-password />
         </el-form-item>
         <el-form-item label="确认密码" prop="password">
@@ -39,7 +83,7 @@
         <el-form-item label="用户类别" prop="auth">
           <el-select v-model="add_account_form.auth" placeholder="请选择用户类别">
             <el-option
-              v-for="item in author_list"
+              v-for="item in authorList"
               :key="item.key"
               :label="item.value"
               :value="item.key"
@@ -60,6 +104,10 @@
 <style lang="scss">
 
   .autoWidth_ {
+    align-content: center;
+    display:inline-block;
+    float:left;
+    margin-top: 15px;
     width: calc(100% - 345px);
   }
 

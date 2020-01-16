@@ -11,7 +11,7 @@
 
 <script>
 import pathToRegexp from 'path-to-regexp'
-
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -26,6 +26,11 @@ export default {
   created() {
     this.getBreadcrumb()
   },
+  computed: {
+    ...mapGetters([
+      'name'
+    ])
+  },
   methods: {
     getBreadcrumb() {
       // only show routes with meta.title
@@ -33,7 +38,7 @@ export default {
       const first = matched[0]
 
       if (!this.isDashboard(first)) {
-        matched = [{ path: '/', meta: { title: '首页' }}].concat(matched)
+        matched = [{ path: '/', meta: { title: this.name }}].concat(matched)
       }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
@@ -43,7 +48,7 @@ export default {
       if (!name) {
         return false
       }
-      return name.trim().toLocaleLowerCase() === '首页'.toLocaleLowerCase()
+      return name.trim().toLocaleLowerCase() === this.name.toLocaleLowerCase()
     },
     pathCompile(path) {
       // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561

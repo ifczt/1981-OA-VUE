@@ -43,3 +43,12 @@ export function creat_user(data) {
     data
   })
 }
+
+export function get_user_list(data) {
+  return request({
+    url: 'user/list',
+    method: 'post',
+    data
+  })
+}
+
