@@ -1,6 +1,6 @@
 <template>
   <div>
-    <card-plane :btn-icon="btnIcon()" btn-text="美元-USD" rate="6.88" btn-icon-country="#icon-meiguo"/>
+    <card-plane :btn-icon="btnIcon()" btn-text="美元" rate="6.88" btn-icon-country="#icon-meiguo"/>
 
   </div>
 </template>
