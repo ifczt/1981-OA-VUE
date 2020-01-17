@@ -51,28 +51,33 @@ export const constantRoutes = [
       path: 'index',
       name: '首页',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
+      meta: {title: '首页', icon: 'dashboard'}
     }]
   },
   {
     path: '/system',
     component: Layout,
-    name: '系统管理及设置',
-    meta: { title: '系统管理及设置', icon: 'system1' },
+    name: 'system',
+    meta: {title: '系统管理及工具', icon: 'system1'},
     children: [{
       path: 'accountManage',
-      name: '账号管理',
+      name: 'accountManage',
       component: () => import('@/views/system/accountManage/index.vue'),
-      meta: { title: '账号管理', icon: 'accountManage' }
+      meta: { title: '账号管理', icon: 'accountManage'}
+    }, {
+      path: 'exchangeRate',
+      name: 'exchangeRate',
+      component: () => import('@/views/system/exchangeRate/index.vue'),
+      meta: { title: '汇率查询', icon: 'exchangeRate' }
     }]
   },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {path: '*', redirect: '/404', hidden: true}
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })
 

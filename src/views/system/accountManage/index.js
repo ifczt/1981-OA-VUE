@@ -1,6 +1,6 @@
 import CardPanel from '@/components/cardPanel/index'
-import {creat_user, get_auth_list, get_user_list} from '@/api/user'
-import {rules, serverData_in} from '@/utils/dataView'
+import { creat_user, get_auth_list, get_user_list} from '@/api/user'
+import { rules, serverData_in } from '@/utils/dataView'
 import Pagination from '@/components/Pagination'
 
 export default {

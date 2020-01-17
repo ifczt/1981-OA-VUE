@@ -23,9 +23,12 @@
 </template>
 
 <script>
-
+import CountTo from 'vue-count-to'
 export default {
   name: 'CardPanel',
+  comments:{
+    CountTo
+  },
   props: {
     btnText: {
       type: String,
