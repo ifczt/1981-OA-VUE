@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="display:inline-block;float: left;">
+    <div style="float: left;">
       <card-panel
         class="cardPanelColor"
         btn-text="内部账号管理"
@@ -16,6 +16,17 @@
         @click.native="u_type=false"
       />
       <el-button type="primary" icon="el-icon-circle-plus" style="margin-left: 15px;width: 300px" @click="add_account_visible=true">{{ btn_label }}</el-button>
+      <br/>
+      <el-button type="warning" style="margin: 10px 0 0 15px;width: 300px" @click="depart_visible=!depart_visible">
+        <svg-icon icon-class="manage" style="margin-right: 5px"/>部门管理
+      </el-button>
+      <transition
+        name="fade"
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+      >
+        <depart class="depart_h" v-show="depart_visible"/>
+      </transition>
     </div>
     <el-card shadow="hover" class="autoWidth_">
       <el-table
@@ -102,7 +113,7 @@
 <script src="./index.js"/>
 
 <style lang="scss">
-
+  @import "../../../assets/animate.css";
   .autoWidth_ {
     align-content: center;
     display:inline-block;

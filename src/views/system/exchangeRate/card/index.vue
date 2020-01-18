@@ -1,33 +1,33 @@
 <template>
   <div>
     <el-card shadow="hover" style="margin: 15px;height: 80px;">
-      <el-row type="flex" class="row-bg" align="middle">
-<!--        <svg class="icon" aria-hidden="true">-->
-<!--          <use :xlink:href="btnIcon" />-->
-<!--        </svg>-->
-        <el-tag style="margin:0 15px">1{{ btnText }}</el-tag>
-        <el-tag type="success">=</el-tag>
-        <el-tag style="margin:0 15px">{{ rate }}人民币</el-tag>
-        <el-divider direction="vertical"></el-divider>
-        <input style="margin-left: 15px" v-model.number="input_num" type="number" name="input_num">
-        <el-switch
-          v-model="change_bool"
-          style="width: 250px"
-          :active-text="btnText"
-          inactive-text="人民币"
-        />
-        <count-to
-          :decimals='4'
-          ref="switch_num"
-          :start-val="0"
-          :end-val="switch_num"
-          style="font-size: 20px;color: #f6416c;font-weight:bold"
-        />
-        <span style="width: 100px;margin-left: 5px">{{change_bool?'人民币':this.btnText}}</span>
-        <el-divider direction="vertical"></el-divider>
+      <el-row type="flex" align="middle" >
+        <svg-icon :icon-class="btnIcon" style="height: 22px;width: 22px;margin-right: 5px"/>
         <el-col>
-          <el-button style="float: right" type="primary" icon="el-icon-refresh" size="mini" />
+          <el-row type="flex" align="middle" >
+          <el-tag style="margin:0 5px">1{{ btnText }}</el-tag>
+          <el-tag type="success">=</el-tag>
+          <el-tag style="margin:0 5px">{{ rate }}人民币</el-tag>
+          <el-divider direction="vertical"/>
+          <input v-model.number="input_num" style="margin-left: 5px" type="number" name="input_num">
+          <el-switch
+            v-model="change_bool"
+            style="width: 150px"
+            :active-text="btnText"
+            inactive-text="人民币"
+          />
+          <count-to
+            :decimals='4'
+            ref="switch_num"
+            :start-val="0"
+            :end-val="switch_num"
+            style="font-size: 20px;color: #f6416c;font-weight:bold"
+          />
+          <span style="width: 60px;margin-left: 5px">{{ change_bool?'人民币':this.btnText }}</span>
+          <el-divider direction="vertical"/>
+          </el-row>
         </el-col>
+        <el-button style="" type="primary" icon="el-icon-refresh" size="mini" />
       </el-row>
     </el-card>
   </div>
@@ -66,7 +66,7 @@ export default {
     },
     btnIcon: {
       type: String,
-      default: '#icon-plant-0'
+      default: 'plant0'
     },
     rate: {
       type: String

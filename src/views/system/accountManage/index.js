@@ -1,4 +1,5 @@
 import CardPanel from '@/components/cardPanel/index'
+import Depart from './depart/index'
 import { creat_user, get_auth_list, get_user_list} from '@/api/user'
 import { rules, serverData_in } from '@/utils/dataView'
 import Pagination from '@/components/Pagination'
@@ -17,6 +18,7 @@ export default {
       },
       // 开关控制器-变量区-START
       add_account_visible: false, // 添加账号显示开关
+      depart_visible:false,
       // 开关控制器-变量区-END
 
       author_list: [], // 用户组选项列表
@@ -114,6 +116,7 @@ export default {
   },
   components: {
     Pagination,
-    CardPanel
+    CardPanel,
+    Depart
   }
 }
