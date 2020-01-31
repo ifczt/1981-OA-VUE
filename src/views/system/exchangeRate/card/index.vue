@@ -27,7 +27,7 @@
           <el-divider direction="vertical"/>
           </el-row>
         </el-col>
-        <el-button style="" type="primary" icon="el-icon-refresh" size="mini" />
+        <el-button style="" type="primary" icon="el-icon-refresh" size="mini" @click="refresh"/>
       </el-row>
     </el-card>
   </div>
@@ -40,6 +40,11 @@ export default {
   name: 'CardPlane',
   components: {
     CountTo
+  },
+  methods: {
+    refresh() {
+      this.$emit('refresh')
+    }
   },
   watch: {
     change_bool(val) {
@@ -69,7 +74,7 @@ export default {
       default: 'plant0'
     },
     rate: {
-      type: String
+      type: Number
     },
     btnIconCountry: {
       type: String

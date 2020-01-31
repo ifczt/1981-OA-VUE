@@ -52,3 +52,11 @@ export function get_user_list(data) {
   })
 }
 
+export function del_user(data) {
+  return request({
+    url: 'user',
+    method: 'delete',
+    data
+  })
+}
+

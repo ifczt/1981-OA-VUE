@@ -1,13 +1,13 @@
 <template>
   <div style="border: 2px dashed rgba(0,0,0,0.31);width: 300px;margin: 15px;padding: 15px;text-align: center">
     <el-tag
-      :key="tag"
-      v-for="tag in dynamicTags"
+      v-for="tag in tags"
+      :key="tag.id"
       closable
       :disable-transitions="false"
       @close="handleClose(tag)"
     style="margin-top: 15px">
-      {{tag}}
+      {{tag.name}}
     </el-tag>
     <div style="margin-top: 15px">
       <el-input
@@ -26,17 +26,25 @@
 </template>
 
 <script>
+  import {add_section, del_section} from "../../../../api/section";
+
   export default {
     data() {
       return {
-        dynamicTags: ['标签一', '标签二', '标签三'],
         inputVisible: false,
         inputValue: ''
       };
     },
+    props:{
+      tags:{
+        type: Array
+      }
+    },
     methods: {
       handleClose(tag) {
-        this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+        del_section({id:tag.id}).then(response => {
+          this.tags.splice(this.tags.indexOf(tag), 1);
+        })
       },
 
       showInput() {
@@ -48,11 +56,17 @@
 
       handleInputConfirm() {
         let inputValue = this.inputValue;
-        if (inputValue) {
-          this.dynamicTags.push(inputValue);
+        if(inputValue.length<1){
+          return
         }
-        this.inputVisible = false;
-        this.inputValue = '';
+        add_section({'name':inputValue}).then(response=>{
+          if (inputValue) {
+            this.tags.push(response.data);
+          }
+          this.inputVisible = false;
+          this.inputValue = '';
+        })
+
       }
     }
   }

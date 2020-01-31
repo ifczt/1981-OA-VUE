@@ -17,7 +17,7 @@
       />
       <el-button type="primary" icon="el-icon-circle-plus" style="margin-left: 15px;width: 300px" @click="add_account_visible=true">{{ btn_label }}</el-button>
       <br/>
-      <el-button type="warning" style="margin: 10px 0 0 15px;width: 300px" @click="depart_visible=!depart_visible">
+      <el-button type="warning" style="margin: 10px 0 0 15px;width: 300px" @click="section_visible=!section_visible">
         <svg-icon icon-class="manage" style="margin-right: 5px"/>部门管理
       </el-button>
       <transition
@@ -25,7 +25,7 @@
         enter-active-class="animated fadeIn"
         leave-active-class="animated fadeOut"
       >
-        <depart class="depart_h" v-show="depart_visible"/>
+        <depart class="depart_h" v-show="section_visible" :tags="section_list"/>
       </transition>
     </div>
     <el-card shadow="hover" class="autoWidth_">
@@ -42,9 +42,14 @@
             <span>{{ scope.row.id }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="用户名" width="80">
+        <el-table-column align="center" label="用户名" >
           <template slot-scope="scope">
             <span>{{ scope.row.account }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="职位" >
+          <template slot-scope="scope">
+            <span>{{ scope.row.author }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="状态" width="80">
@@ -56,11 +61,11 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" width="180px">
+        <el-table-column align="center" label="操作" width="260px">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" icon="el-icon-edit" />
-            <el-button type="warning" size="mini" icon="el-icon-error" />
-            <el-button type="danger" size="mini" icon="el-icon-delete" />
+            <el-button  icon="el-icon-edit" @click="update_user_show(scope.row.account,scope.row.id)"/>
+            <el-button  icon="el-icon-place" v-show="u_type"/>
+            <el-button type="danger" icon="el-icon-delete" @click="del_user_view(scope.row.id,scope.$index)"/>
           </template>
         </el-table-column>
       </el-table>
@@ -91,6 +96,16 @@
         <el-form-item label="确认密码" prop="password">
           <el-input v-model="add_account_form.password_ver" placeholder="请再次输入密码" show-password />
         </el-form-item>
+        <el-form-item label="归属部门" :prop="u_type?'section':''" v-show="u_type">
+          <el-select v-model="add_account_form.section" placeholder="请选择归属部门">
+            <el-option
+              v-for="item in section_list"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="用户类别" prop="auth">
           <el-select v-model="add_account_form.auth" placeholder="请选择用户类别">
             <el-option
@@ -101,10 +116,68 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item label="指派运营" v-show="!u_type">
+          <el-select v-model="add_account_form.parent" placeholder="请选择运营人员">
+            <el-option-group
+              v-for="g in user_list_group"
+              :key="g.label"
+              :label="g.label">
+              <el-option
+                v-for="item in g.options"
+                :key="item.u_id"
+                :label="item.account"
+                :value="item.u_id">
+              </el-option>
+            </el-option-group>
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="add_account_visible = false">取 消</el-button>
         <el-button type="primary" @click="submit_create_account('add_account_form')">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog :title="update_title" :visible.sync="update_dialog_visible" width="500px">
+      <el-form ref="update_account_form" :model="update_account_form" :rules="rules" label-width="100px">
+        <el-form-item label="归属部门" :prop="u_type?'section':''" v-show="u_type">
+          <el-select v-model="update_account_form.section" placeholder="请选择归属部门">
+            <el-option
+              v-for="item in section_list"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="用户类别" prop="auth">
+          <el-select v-model="update_account_form.auth" placeholder="请选择用户类别">
+            <el-option
+              v-for="item in authorList"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="指派运营" v-show="!u_type">
+          <el-select v-model="update_account_form.parent" placeholder="请选择运营人员">
+            <el-option-group
+              v-for="g in user_list_group"
+              :key="g.label"
+              :label="g.label">
+              <el-option
+                v-for="item in g.options"
+                :key="item.u_id"
+                :label="item.account"
+                :value="item.u_id">
+              </el-option>
+            </el-option-group>
+          </el-select>
+        </el-form-item>
+      </el-form>
+       <span slot="footer" class="dialog-footer">
+        <el-button @click="update_dialog_visible = false">取 消</el-button>
+        <el-button type="primary" @click="submit_update_account('add_account_form')">确 定</el-button>
       </span>
     </el-dialog>
   </div>

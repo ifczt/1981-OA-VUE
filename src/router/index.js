@@ -42,7 +42,6 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
     component: Layout,
@@ -55,6 +54,28 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/daily',
+    component: Layout,
+    redirect: '/daily',
+    children: [{
+      path: 'daily',
+      name: '每日业绩',
+      component: () => import('@/views/daily/index'),
+      meta: {title: '每日业绩', icon: 'daily'}
+    }]
+  },
+  {
+    path: '/data_show',
+    component: Layout,
+    redirect: '/data_show',
+    children: [{
+      path: 'data_show',
+      name: 'data_show',
+      component: () => import('@/views/data_show/index'),
+      meta: {title: '数据可视化', icon: 'data_show'}
+    }]
+  },
+  {
     path: '/system',
     component: Layout,
     name: 'system',
@@ -64,6 +85,16 @@ export const constantRoutes = [
       name: 'accountManage',
       component: () => import('@/views/system/accountManage/index.vue'),
       meta: { title: '账号管理', icon: 'accountManage'}
+    }, {
+      path: 'allocation',
+      name: 'allocation',
+      component: () => import('@/views/system/allocation/index.vue'),
+      meta: { title: '企业账号分配', icon: 'allocation'}
+    },{
+      path: 'amazon',
+      name: 'amazon',
+      component: () => import('@/views/system/amazon/index.vue'),
+      meta: { title: '亚马逊账号管理', icon: 'amazon' }
     }, {
       path: 'exchangeRate',
       name: 'exchangeRate',

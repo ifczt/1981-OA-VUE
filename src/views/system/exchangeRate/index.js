@@ -1,5 +1,5 @@
 import CardPlane from './card/index'
-import {get_list} from "../../../api/exchange_rate";
+import {add_rate, get_list} from '../../../api/exchange_rate'
 
 export default {
   name: 'Index',
@@ -8,13 +8,22 @@ export default {
   },
   data() {
     return {
-      list: []
+      list: [],
+      add_exchange_visible: false,
+      scur: ''
     }
   },
   computed: {},
   methods: {
-    add_rate(){
-
+    add_rate_view(scur) {
+      add_rate({ scur:scur || this.scur, refresh:true }).then(response => {
+        if(scur){
+          return
+        }
+        this.list.unshift(response.data)
+        this.add_exchange_visible = false
+        this.scur = ''
+      })
     }
   },
   created() {
